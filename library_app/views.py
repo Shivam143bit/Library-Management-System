@@ -8,7 +8,7 @@ from .forms import AuthorForm, BookForm, BorrowRecordForm
 import xlsxwriter
 from io import BytesIO
 
-# Author Views
+
 class AuthorListView(ListView):
     model = Author
     template_name = 'library_app/author_list.html'
@@ -50,7 +50,7 @@ class AuthorDeleteView(DeleteView):
         messages.success(request, 'Author deleted successfully!')
         return super().delete(request, *args, **kwargs)
 
-# Book Views
+
 class BookListView(ListView):
     model = Book
     template_name = 'library_app/book_list.html'
@@ -91,7 +91,7 @@ class BookDeleteView(DeleteView):
         messages.success(request, 'Book deleted successfully!')
         return super().delete(request, *args, **kwargs)
 
-# Borrow Record Views
+
 class BorrowRecordListView(ListView):
     model = BorrowRecord
     template_name = 'library_app/borrow_list.html'
@@ -132,29 +132,28 @@ class BorrowRecordDeleteView(DeleteView):
         messages.success(request, 'Borrow record deleted successfully!')
         return super().delete(request, *args, **kwargs)
 
-# Export to Excel
 def export_library_data(request):
     try:
-        # Create an in-memory output file for the Excel workbook
+       
         output = BytesIO()
         
-        # Create a workbook and add worksheets
+   
         workbook = xlsxwriter.Workbook(output)
         author_sheet = workbook.add_worksheet('Authors')
         book_sheet = workbook.add_worksheet('Books')
         borrow_sheet = workbook.add_worksheet('Borrow Records')
         
-        # Add a bold format to use to highlight cells
+       
         bold = workbook.add_format({'bold': True})
         date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
         
-        # Write headers for Author sheet
+       
         author_sheet.write(0, 0, 'ID', bold)
         author_sheet.write(0, 1, 'Name', bold)
         author_sheet.write(0, 2, 'Email', bold)
         author_sheet.write(0, 3, 'Bio', bold)
         
-        # Write Author data
+       
         authors = Author.objects.all()
         for row_num, author in enumerate(authors, 1):
             author_sheet.write(row_num, 0, author.id)
@@ -162,14 +161,13 @@ def export_library_data(request):
             author_sheet.write(row_num, 2, author.email)
             author_sheet.write(row_num, 3, author.bio)
         
-        # Write headers for Book sheet
+   
         book_sheet.write(0, 0, 'ID', bold)
         book_sheet.write(0, 1, 'Title', bold)
         book_sheet.write(0, 2, 'Genre', bold)
         book_sheet.write(0, 3, 'Published Date', bold)
         book_sheet.write(0, 4, 'Author', bold)
-        
-        # Write Book data
+     
         books = Book.objects.all()
         for row_num, book in enumerate(books, 1):
             book_sheet.write(row_num, 0, book.id)
@@ -178,14 +176,14 @@ def export_library_data(request):
             book_sheet.write_datetime(row_num, 3, book.published_date, date_format)
             book_sheet.write(row_num, 4, book.author.name)
         
-        # Write headers for Borrow Record sheet
+       
         borrow_sheet.write(0, 0, 'ID', bold)
         borrow_sheet.write(0, 1, 'User Name', bold)
         borrow_sheet.write(0, 2, 'Book', bold)
         borrow_sheet.write(0, 3, 'Borrow Date', bold)
         borrow_sheet.write(0, 4, 'Return Date', bold)
         
-        # Write Borrow Record data
+   
         borrow_records = BorrowRecord.objects.all()
         for row_num, record in enumerate(borrow_records, 1):
             borrow_sheet.write(row_num, 0, record.id)
@@ -195,13 +193,13 @@ def export_library_data(request):
             if record.return_date:
                 borrow_sheet.write_datetime(row_num, 4, record.return_date, date_format)
         
-        # Close the workbook
+      
         workbook.close()
         
-        # Seek to the beginning of the stream
+  
         output.seek(0)
         
-        # Create the HttpResponse with the appropriate Excel headers
+        
         response = HttpResponse(
             output.read(),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
