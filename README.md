@@ -34,11 +34,13 @@ Make sure you have the following installed:
 1. **Clone the Repository**
    
 git clone https://github.com/your-username/library-management.git
+
 cd library-management
 
 2. **Create Virtual Environment**
 
 python -m venv venv
+
 source venv/bin/activate      (On Windows: venv\Scripts\activate)
 
 3. **Install Dependencies**
@@ -48,6 +50,7 @@ pip install -r requirements.txt
 4. **Apply Migrations**
 
 python manage.py makemigrations
+
 python manage.py migrate
 
 5. **Create Superuser (Optional for Admin Access)**
@@ -61,6 +64,7 @@ python manage.py runserver
 7. **Access in Browser**
 
 Visit: http://127.0.0.1:8000/library/
+
 Admin: http://127.0.0.1:8000/admin/
 
 ## 🗃️ Admin Credentials (if created)
