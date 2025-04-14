@@ -63,7 +63,7 @@
 
 7. **Access in Browser**
 
-   Visit: http://127.0.0.1:8000/library/
+   Visit: http://127.0.0.1:8000/
 
    Admin: http://127.0.0.1:8000/admin/
 
